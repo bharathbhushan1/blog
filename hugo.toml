@@ -1,3 +1,64 @@
-baseURL = 'https://example.org/'
-locale = 'en-us'
-title = 'My New Hugo Project'
+baseURL = "https://bharath.github.io/blog/"
+locale = "en-us"
+title = "Bharath's Blog"
+theme = "PaperMod"
+paginate = 10
+enableRobotsTXT = true
+buildDrafts = false
+buildFuture = false
+buildExpired = false
+
+[params]
+  env = "production"
+  title = "Bharath's Blog"
+  description = "Thoughts, notes, and things worth sharing."
+  author = "Bharath"
+  defaultTheme = "auto"
+  ShowReadingTime = true
+  ShowShareButtons = false
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+  ShowCodeCopyButtons = true
+  ShowWordCount = false
+  ShowRssButtonInSectionTermList = true
+  UseHugoToc = true
+  disableScrollToTop = false
+  comments = false
+  hidemeta = false
+  hideSummary = false
+
+  [params.homeInfoParams]
+    Title = "Hi, I'm Bharath"
+    Content = "Welcome to my blog — I write about technology, ideas, and things I find interesting."
+
+  [[params.socialIcons]]
+    name = "github"
+    url = "https://github.com/bharath"
+
+  [[params.socialIcons]]
+    name = "email"
+    url = "mailto:bharath.bhushan.id@gmail.com"
+
+[menu]
+  [[menu.main]]
+    identifier = "posts"
+    name = "Posts"
+    url = "/posts/"
+    weight = 10
+  [[menu.main]]
+    identifier = "tags"
+    name = "Tags"
+    url = "/tags/"
+    weight = 20
+  [[menu.main]]
+    identifier = "about"
+    name = "About"
+    url = "/about/"
+    weight = 30
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    noClasses = false
