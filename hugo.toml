@@ -33,7 +33,7 @@ buildExpired = false
 
   [[params.socialIcons]]
     name = "github"
-    url = "https://github.com/bharath"
+    url = "https://github.com/bharathbhushan1"
 
   [[params.socialIcons]]
     name = "email"
