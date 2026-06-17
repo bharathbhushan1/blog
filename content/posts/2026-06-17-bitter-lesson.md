@@ -2,7 +2,7 @@
 title: "The Bitter Lesson"
 date: 2026-06-17T10:00:00
 draft: false
-tags: ["machine learning", "ai"]
+tags: ["machine learning", "reinforcement learning"]
 ---
 
 This post is a short summary of Rich Sutton's [Bitter Lesson](http://www.incompleteideas.net/IncIdeas/BitterLesson.html) essay. 
