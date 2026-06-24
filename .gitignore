@@ -2,6 +2,9 @@ public/
 resources/_gen/
 .hugo_build.lock
 
+# scratch space for local image transforms (svg->png, etc.)
+tmp/
+
 # macOS
 .DS_Store
 **/.DS_Store
