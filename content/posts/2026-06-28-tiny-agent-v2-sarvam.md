@@ -44,8 +44,6 @@ conversation is the standard OpenAI chat pattern:
 Claude also nudged me to add a system prompt using the `system` role.
 The Gemini version did not have an obvious place to put the system problem.
 
-## The endpoint is stateless, and you can see it
-
 There is a `DEBUG=1` mode that pretty-prints the actual request body each turn.
 There is also a per-call `usage` log.
 
