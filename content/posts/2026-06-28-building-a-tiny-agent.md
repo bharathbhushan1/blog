@@ -8,7 +8,8 @@ tags: ["ai agents", "go"]
 I built a small CLI coding agent in Go, following Thorsten Ball's
 [How to Build an Agent](https://ampcode.com/notes/how-to-build-an-agent). It
 runs against the free tier of Gemini (`gemini-2.5-flash-lite`), so the whole
-thing costs nothing to play with.
+thing costs nothing to play with. The code lives in
+[`test-agent`](https://github.com/bharathbhushan1/ai-learning/tree/main/test-agent).
 
 The _Agent_ abstraction has a method to get user input, an api key to call the
 LLM and a list of tools. The Agentic loop gets textual user input, sends it
