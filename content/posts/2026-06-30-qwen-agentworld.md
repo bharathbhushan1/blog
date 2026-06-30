@@ -6,11 +6,10 @@ tags: ["machine learning", "reinforcement learning", "agents", "world models"]
 ---
 
 The Qwen team [released](https://qwen.ai/blog?id=qwen-agentworld) Qwen-AgentWorld
-on 2026-06-24. I came to know more about
-[world models](https://en.wikipedia.org/wiki/World_model) via this post. It is
+on 2026-06-24. I came to know more about language world models via this post. It is
 also related to [agents]({{< ref "2026-06-24-ai-agents.md" >}}), and
-[offline RL]({{< ref "2026-06-13-offline-rl.md" >}}). This post is a
-short summary of my understanding.
+[offline RL]({{< ref "2026-06-13-offline-rl.md" >}}). This post is a short summary
+of my understanding.
 
 ## Context
 
