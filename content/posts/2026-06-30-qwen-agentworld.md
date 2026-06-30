@@ -6,83 +6,42 @@ tags: ["machine learning", "reinforcement learning", "agents", "world models"]
 ---
 
 The Qwen team [released](https://qwen.ai/blog?id=qwen-agentworld) Qwen-AgentWorld
-on 2026-06-24, and it's a neat idea that ties together a few threads I've been
-reading about lately — [world models](https://en.wikipedia.org/wiki/World_model),
-[agents]({{< ref "2026-06-24-ai-agents.md" >}}), and
+on 2026-06-24. I came to know more about
+[world models](https://en.wikipedia.org/wiki/World_model) via this post. It is
+also related to [agents]({{< ref "2026-06-24-ai-agents.md" >}}), and
 [offline RL]({{< ref "2026-06-13-offline-rl.md" >}}). This post is a
-short summary.
+short summary of my understanding.
 
-## The core idea
+## Context
 
-To train an agent with reinforcement learning, you need an environment for it to
-act in. That environment gives you the *next state* after the agent takes an
-action. Normally you get this by actually executing the action — running the
-terminal command, clicking the web button, calling the tool. But real execution
-is slow, sometimes irreversible (deleting a file, sending money), and often
-locked behind proprietary deployments.
+To train an agent with RL, you need an environment in which it can learn by trying
+out various actions and observing the result. But real environments are slow and
+sometimes irreversible.
 
-A **language world model** sidesteps this. It's a model trained to *predict* what
-the environment will return next, given the current state and the agent's action.
-The environment becomes something you can simulate instead of execute. The clever
-part: observations are represented as renderable code (XML, HTML markup) rather
-than pixels, so even GUI environments can be modelled by a text-only LLM.
+A **language world model** predicts the new state of the environment given
+(current-state, agent-action). Interestingly, the observation is emitted as XML/HTML
+allow even GUI environments to be modelled by a text-only LLM.
 
-## Seven domains in one model
+## Details
 
-Qwen-AgentWorld is the first such model to cover seven agent domains at once:
-
-- **Text-based:** MCP (tool use), Search, Terminal, SWE (software engineering)
-- **GUI-based:** Web, OS, Android
-
+Qwen-AgentWorld covers seven agent domains (MCP, Search, Terminal, SWE, Web, OS, Android).
 Knowledge transfers across domains, so what it learns simulating a terminal helps
-it simulate, say, software-engineering tasks.
+it simulate, say, software-engineering tasks. There are two model sizes - 35B/3B and 397B/17B.
 
-## Two model sizes
+During pre-training, 10M+ real interaction trajectories of various environments are used.
+During SFT, it is trained to emit `<think>` blocks containing reasoning for the next state
+and then emits the predicted next state. During RL, the simulation fidelity is improved.
 
-- **Qwen-AgentWorld-35B-A3B** — 35B total parameters, 3B active (MoE), 256K context.
-- **Qwen-AgentWorld-397B-A17B** — 397B total, 17B active.
+**AgentWorldBench** is a new benchmark with observations from real environments. The 397B model
+is slightly ahead of GPT-5.4. I am not sure how to interpret this. How can a model explicitly
+trained for simulation do only slightly better on a purpose-crafted benchmark compared to a
+frontier LLM?
 
-Both are Apache-2.0 and on Hugging Face and ModelScope.
-
-## How it's trained
-
-The slogan is **"CPT injects, SFT activates, RL sharpens."** Three stages:
-
-1. **Continual pre-training (CPT)** injects environment knowledge from 10M+ real
-   interaction trajectories.
-2. **Supervised fine-tuning (SFT)** activates next-state-prediction reasoning —
-   the model learns to *think* (in `<think>` blocks) before predicting the next
-   observation.
-3. **Reinforcement learning (RL)** sharpens simulation fidelity, using a hybrid
-   reward of LLM judges plus rule-based verifiers.
-
-## Does the simulation hold up?
-
-They built **AgentWorldBench** to check, scoring predictions on five dimensions:
-format, factuality, consistency, realism, and quality, against ground-truth
-observations from real environments.
-
-The 397B model scores **58.71** overall — ahead of GPT-5.4 (58.25) and other
-frontier proprietary models, with its biggest edges on Terminal and SWE. The
-three-stage pipeline lifts the 35B model by **+8.66** points (47.73 → 56.39) over
-the base model with no world-model training.
-
-## Why this is interesting
-
-Two ways to use it stood out to me:
-
-- **As a simulator for agent RL.** Training an agent against the *simulated*
-  environment beat training against the *real* one on WideSearch (50.3% vs 45.6%
-  F1). That's counterintuitive until you realise the simulator is controllable —
-  you can inject perturbations and edge cases the real environment would rarely
-  produce.
-- **As an agent foundation model.** The same model can both pick actions and
-  predict states, and that "predict before you act" planning transfers to
-  out-of-distribution tasks without extra fine-tuning.
-
-The throughline back to the [Bitter Lesson]({{< ref "2026-06-17-bitter-lesson.md" >}}): instead
-of hand-building each environment, learn one model that simulates all of them, and
-scale it. Worth a read.
+This LWM can be used into two ways: as a highly controllable simulator to train another agent
+or as an agent foundation model itself. The simulator use case is obvious - it reduces cost of
+training and allow fine-grained control over the behaviour. The foundation model use case is
+not so clear to me. Probably being able to predict the result allows it to iterate on the action
+and predict better actions and tool calls.
 
 Sources: [Qwen blog](https://qwen.ai/blog?id=qwen-agentworld),
 [GitHub](https://github.com/QwenLM/Qwen-AgentWorld),
